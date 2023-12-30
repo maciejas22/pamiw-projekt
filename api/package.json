@@ -1,19 +1,24 @@
 {
-  "name": "pamiw-lab4",
+  "name": "pamiw-projekt",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run seed && ts-node ./src/app.ts",
+    "start": "ts-node ./src/app.ts",
     "dev": "nodemon ./src/app.ts",
-    "build": "npx prisma generate",
+    "prisma:generate": "npx prisma generate",
+    "prisma:migrate:dev": "npx prisma migrate dev",
+    "prisma:migrate:deploy": "npx prisma migrate deploy",
+    "prisma:studio": "npx prisma studio",
+    "prisma:seed": "npx prisma db seed"
+  },
+  "prisma": {
     "seed": "ts-node ./prisma/seed.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@remix-run/dev": "^2.2.0",
     "@types/bcrypt": "^5.0.2",
     "@types/fastify-jwt": "^0.8.1",
     "@types/fastify-static": "^2.2.1",
@@ -32,9 +37,6 @@
     "@fastify/swagger": "^8.12.0",
     "@fastify/swagger-ui": "^1.10.1",
     "@prisma/client": "^5.5.2",
-    "@remix-run/node": "^2.2.0",
-    "@remix-run/react": "^2.2.0",
-    "@remix-run/serve": "^2.2.0",
     "axios": "^1.6.1",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.3.1",

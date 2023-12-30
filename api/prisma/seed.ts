@@ -21,7 +21,7 @@ async function clear() {
   await prisma.author.deleteMany({})
 }
 
-async function seed() {
+async function main() {
   await clear()
 
   const authors = await Promise.all(
@@ -40,12 +40,12 @@ async function seed() {
     }),
   )
 }
-
-seed()
-  .catch((e) => {
-    console.error(e)
-    process.exit(1)
-  })
-  .finally(async () => {
+main()
+  .then(async () => {
     await prisma.$disconnect()
+  })
+  .catch(async (e) => {
+    console.error(e)
+    await prisma.$disconnect()
+    process.exit(1)
   })

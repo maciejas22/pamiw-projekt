@@ -8,6 +8,6 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build
+RUN npm run prisma:generate
 
-CMD ["npm", "run", "start"]
+CMD npm run prisma:migrate:deploy && npm run prisma:seed && npm run start

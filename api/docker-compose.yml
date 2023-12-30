@@ -4,9 +4,9 @@ services:
   pamiw-db:
     image: postgres
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: db
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     ports:
       - '5432:5432'
     networks:
@@ -25,7 +25,10 @@ services:
       - '3000:3000'
     environment:
       PRISMA_SCHEMA_DISABLE_ADVISORY_LOCK: true,
-      DATABASE_URL: '${DATABASE_URL}'
+      DATABASE_URL: ${DATABASE_URL}
+    depends_on:
+      pamiw-db:
+        condition: service_healthy
     networks:
       - pamiw-network
 
