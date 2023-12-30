@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  pamiw-db:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
+    ports:
+      - '5432:5432'
+    networks:
+      - pamiw-network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pamiw-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      PRISMA_SCHEMA_DISABLE_ADVISORY_LOCK: true,
+      DATABASE_URL: '${DATABASE_URL}'
+    networks:
+      - pamiw-network
+
+networks:
+  pamiw-network:
