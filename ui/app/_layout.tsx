@@ -1,6 +1,7 @@
 import { Suspense, useEffect, useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Link, Slot, SplashScreen } from 'expo-router';
+import { Slot, SplashScreen, router } from 'expo-router';
 
 import { Button, TamaguiProvider, Text, Theme, XStack, YStack } from 'tamagui';
 
@@ -43,38 +44,45 @@ function RootLayoutNav() {
   const queryClient = new QueryClient();
 
   return (
-    <Suspense fallback={<Text>Loading...</Text>}>
-      <TamaguiProvider config={config} defaultTheme={theme}>
+    <TamaguiProvider config={config} defaultTheme={theme}>
+      <Suspense fallback={<Text>Loading...</Text>}>
         <Theme name="blue">
           <QueryClientProvider client={queryClient}>
-            <XStack
-              alignItems="center"
-              justifyContent="space-between"
-              margin="$3"
+            <SafeAreaView
+              style={{
+                flex: 1,
+                backgroundColor: theme === 'light' ? '#F8F8F8' : '#151515',
+              }}
             >
-              <XStack space>
-                <Link href="/(tabs)/authors/list">
-                  <Button>Authors</Button>
-                </Link>
-                <Link href="/(tabs)/books/list">
-                  <Button>Books</Button>
-                </Link>
-              </XStack>
-
-              <Button
-                onPress={() => {
-                  setTheme(theme === 'light' ? 'dark' : 'light');
-                }}
+              <XStack
+                alignItems="center"
+                justifyContent="space-between"
+                margin="$3"
               >
-                Change Theme
-              </Button>
-            </XStack>
-            <YStack margin="$3">
-              <Slot />
-            </YStack>
+                <XStack space>
+                  <Button onPress={() => router.push('/(tabs)/authors/list')}>
+                    Authors
+                  </Button>
+                  <Button onPress={() => router.push('/(tabs)/books/list')}>
+                    Books
+                  </Button>
+                </XStack>
+
+                <Button
+                  onPress={() => {
+                    setTheme(theme === 'light' ? 'dark' : 'light');
+                  }}
+                >
+                  Change Theme
+                </Button>
+              </XStack>
+              <YStack margin="$3">
+                <Slot />
+              </YStack>
+            </SafeAreaView>
           </QueryClientProvider>
         </Theme>
-      </TamaguiProvider>
-    </Suspense>
+      </Suspense>
+    </TamaguiProvider>
   );
 }
